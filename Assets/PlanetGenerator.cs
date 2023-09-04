@@ -16,7 +16,7 @@ public class PlanetGenerator : MonoBehaviour
     {
         //GenerateCube(6, ConstantSubdivisions, 5);
         //BuildPlanetAndSmall(5, 6);
-        generatePlanets(Random.Range(10,50));
+        generatePlanets(Random.Range(2,10));
 
         //GenerateCube(6, ConstantSubdivisions, 5);
         //BuildPlanet(5, 6).transform.position = new Vector3(10,0,0);
@@ -25,7 +25,7 @@ public class PlanetGenerator : MonoBehaviour
     {
         for (int i = 0; i < PlanetNumber; i++)
         {
-            float MaxSpace = Mathf.Pow(PlanetNumber, 1f / 3f) * 250;
+            float MaxSpace = Mathf.Pow(PlanetNumber, 1f / 3f) * 1000;
             float r = Random.Range(1,10f);
             GenerateCube((int)Mathf.Pow(r, 1f / 2f), ConstantSubdivisions, r,true);
             BuildPlanetAndSmall(r, 6, Random.value < 0.5f).transform.position = new Vector3(Random.Range(MaxSpace*-1, MaxSpace), Random.Range(MaxSpace * -1, MaxSpace), Random.Range(MaxSpace * -1, MaxSpace));     

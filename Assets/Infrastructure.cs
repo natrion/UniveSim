@@ -15,11 +15,10 @@ public class Infrastructure : MonoBehaviour
     [SerializeField] TextMeshProUGUI TextPopulation;
 
     [SerializeField] private float PopulationGrouth;
-    private int populationRise;
     private int population = 50;
-    private int populationHoused = 100;
-    private float ore=50;
-    private float oreGenerating = 10;
+    public static int populationHoused = 100;
+    private float ore;
+    public static float oreGenerating =1;
     [SerializeField]  public int secondToChangePopulation;
     private bool enoughtOre (float OreNeded)
     {
@@ -41,7 +40,7 @@ public class Infrastructure : MonoBehaviour
     private void SetText()
     {
         TextOre.text = ore.ToString() + "(+"+ oreGenerating.ToString() + "/s)";
-        TextPopulation.text = populationHoused.ToString() + "(free seats)/" + population.ToString()+"(population)" + "(+" + Mathf.Round(populationRise/ secondToChangePopulation).ToString() + "/s)";
+        TextPopulation.text = populationHoused.ToString() + "(free seats)/" + population.ToString()+"(population)" + "(+" + Mathf.Round((float)population * PopulationGrouth / secondToChangePopulation).ToString() + "/s)";
     }
     private IEnumerator ChangeValues()
     {
@@ -53,9 +52,8 @@ public class Infrastructure : MonoBehaviour
             if (loopNumber > secondToChangePopulation)
             {
                 loopNumber = 0;
-                populationRise = Mathf.RoundToInt((float)population * PopulationGrouth);
+                population += Mathf.RoundToInt((float)population * PopulationGrouth);
             }
-            population += populationRise;
             ore += oreGenerating;
             SetText();
 
@@ -109,8 +107,10 @@ public class Infrastructure : MonoBehaviour
                     ToBuidCopy.transform.rotation = ToBuidSlectCopy.transform.rotation;
                     ToBuidCopy.transform.parent = ToBuidSlectCopy.transform.parent;
 
-                    OreProduction += oreGenerating;
+                    oreGenerating += OreProduction;
                     populationHoused += seats;
+                    CameraHoler.transform.parent.GetComponent<Gravity>().oreGenerationLocal += OreProduction;
+                    CameraHoler.transform.parent.GetComponent<Gravity>().freeSeatsLocal += seats;
                     SetText();
                 }
             }

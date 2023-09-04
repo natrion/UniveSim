@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Gravity : MonoBehaviour
 {
+    public int freeSeatsLocal;
+    public float oreGenerationLocal;
     public float rStart;
     public bool doNotMarge;
     public bool ToDestroy;
@@ -54,6 +56,8 @@ public class Gravity : MonoBehaviour
                 rigidbody2.gameObject.GetComponent<Gravity>().ToDestroy = true;
                 Vector3 v2i = rigidbody2.velocity;
                 if(rigidbody2.transform.childCount == 4) rigidbody2.transform.GetChild(3).parent = transform;
+                Infrastructure.populationHoused -= rigidbody2.gameObject.GetComponent<Gravity>().freeSeatsLocal;
+                Infrastructure.oreGenerating -= rigidbody2.gameObject.GetComponent<Gravity>().oreGenerationLocal;
                 Destroy(collider.transform.gameObject);
 
                 Vector3 v1i = rigidbody1.velocity;
