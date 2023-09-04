@@ -22,7 +22,7 @@ public class CameraController : MonoBehaviour
     private int OnPlanet;
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        /*if (Input.GetMouseButtonDown(0))
         {
             RaycastHit hit;
             Ray ray = GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
@@ -34,17 +34,20 @@ public class CameraController : MonoBehaviour
                     transform.parent.localPosition = Vector3.zero;
                 }
             }
-        }
+        }*/
         if(transform.parent.parent != null) transform.localPosition -=  new Vector3(Input.GetAxis("Mouse ScrollWheel") * transform.localPosition.x, 0, 0);
-        if(transform.parent.parent != null) transform.localPosition = new Vector3(Mathf.Clamp(transform.localPosition.x, transform.parent.parent.GetComponent<Gravity>().r* transform.parent.parent.localScale.x+0.5f, 100000), transform.localPosition.y, transform.localPosition.z);
+        if(transform.parent.parent != null) transform.localPosition = new Vector3(Mathf.Clamp(transform.localPosition.x, transform.parent.parent.GetComponent<Gravity>().r + 0.5f, 100000), transform.localPosition.y, transform.localPosition.z);
         // Input.GetAxis.h
         if (Input.GetMouseButton(1))
         {
             float mY = Input.GetAxis("Mouse Y");
             float mX = Input.GetAxis("Mouse X");
-            float changeTOPositive = transform.parent.parent.position.x / Mathf.Abs(transform.parent.parent.position.x);
-            transform.parent.localEulerAngles += new Vector3(0, (mX + Input.GetAxisRaw("Horizontal")) * changeTOPositive, (mY + Input.GetAxisRaw("Vertical")) * changeTOPositive*-1) * transform.position.x * planetRotate/ transform.parent.parent.GetComponent<Gravity>().r;
-            transform.parent.localEulerAngles = new Vector3(0, transform.parent.eulerAngles.y, Mathf.Clamp(transform.parent.eulerAngles.z - (Mathf.Round(transform.parent.eulerAngles.z / 360) * 360), MaxTilt * -1, MaxTilt));
+            float changeTOPositiveX = transform.parent.parent.position.x / Mathf.Abs(transform.parent.parent.position.x);
+            float changeTOPositiveY = transform.parent.parent.position.y / Mathf.Abs(transform.parent.parent.position.y);
+            float changeTOPositiveZ = transform.parent.parent.position.z / Mathf.Abs(transform.parent.parent.position.z);
+            float changeTOPositive = changeTOPositiveX * changeTOPositiveY * changeTOPositiveZ;
+            transform.parent.localEulerAngles += new Vector3(0, (mX + Input.GetAxisRaw("Horizontal")) * changeTOPositive, (mY + Input.GetAxisRaw("Vertical")) * changeTOPositive*-1)  * planetRotate;
+            transform.parent.localEulerAngles = new Vector3(0, transform.parent.localEulerAngles.y, Mathf.Clamp(transform.parent.localEulerAngles.z - (Mathf.Round(transform.parent.localEulerAngles.z / 360) * 360), MaxTilt * -1, MaxTilt));
         }
 
         bool change = false;
@@ -83,10 +86,9 @@ public class CameraController : MonoBehaviour
                 World.GetChild(OnPlanet).GetChild(2).gameObject.SetActive(true);
 
             }
+            
         }
-
-
-        
+        transform.parent.parent.localScale = Vector3.one;
     }
 }
 

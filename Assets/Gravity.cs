@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Gravity : MonoBehaviour
 {
+    public float rStart;
     public bool doNotMarge;
     public bool ToDestroy;
     public float r;
@@ -42,7 +43,7 @@ public class Gravity : MonoBehaviour
             {
                 ToDestroy = false;
             }
-            if (R < r + r2+5 & r >= r2 & doNotMarge == false )
+            if (R < r + r2+5 & r > r2 & doNotMarge == false )
             {
                 //PlanetGenerator Generator = transform.parent.gameObject.GetComponent<PlanetGenerator>();
 
@@ -61,7 +62,7 @@ public class Gravity : MonoBehaviour
                 float ScaleTo = Mathf.Pow((m1 + m2) / m1-1f, 1f / 3f);
                 transform.localScale += ScaleTo * new Vector3(1f, 1f, 1f);
                 rigidbody1.mass = m1 + m2;
-                r *=  (m1 + m2)/ m1;
+                r += rStart *transform.localScale.x;
                 ToDestroy = true;
 
                 //((m1 - m2) / (m1 + m2)) * v1i + ((2 * m2) / (m1 + m2)) * v2i

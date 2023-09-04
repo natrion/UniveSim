@@ -16,7 +16,7 @@ public class PlanetGenerator : MonoBehaviour
     {
         //GenerateCube(6, ConstantSubdivisions, 5);
         //BuildPlanetAndSmall(5, 6);
-        generatePlanets(Random.Range(1,20));
+        generatePlanets(Random.Range(10,50));
 
         //GenerateCube(6, ConstantSubdivisions, 5);
         //BuildPlanet(5, 6).transform.position = new Vector3(10,0,0);
@@ -25,7 +25,7 @@ public class PlanetGenerator : MonoBehaviour
     {
         for (int i = 0; i < PlanetNumber; i++)
         {
-            float MaxSpace = Mathf.Pow(PlanetNumber, 1f / 3f) * 500f;
+            float MaxSpace = Mathf.Pow(PlanetNumber, 1f / 3f) * 250;
             float r = Random.Range(1,10f);
             GenerateCube((int)Mathf.Pow(r, 1f / 2f), ConstantSubdivisions, r,true);
             BuildPlanetAndSmall(r, 6, Random.value < 0.5f).transform.position = new Vector3(Random.Range(MaxSpace*-1, MaxSpace), Random.Range(MaxSpace * -1, MaxSpace), Random.Range(MaxSpace * -1, MaxSpace));     
@@ -196,6 +196,7 @@ public class PlanetGenerator : MonoBehaviour
             GameObject Ocean = BuildPlanet(r+Random.Range(0f,3f), planes, false, OceanMaterial[Random.Range(0,OceanMaterial.Length)]);
             Ocean.transform.parent = BigPlanet.transform;
             Ocean.name = "Ocean";
+            Ocean.SetActive(false);
         }
         else
         {
@@ -203,7 +204,7 @@ public class PlanetGenerator : MonoBehaviour
             Ocean.transform.parent = BigPlanet.transform;
             Ocean.name = "NotOcean";
         }
-
+        BigPlanet.transform.GetChild(0).gameObject.SetActive(false);
         return BigPlanet;
 
     }
@@ -221,6 +222,7 @@ public class PlanetGenerator : MonoBehaviour
             col.radius = 1000000000000000000;
             Gravity g = Parent.AddComponent<Gravity>();
             g.r = r;
+            g.rStart = r;
             g.planes = planes;
         }
         else
