@@ -184,16 +184,16 @@ public class PlanetGenerator : MonoBehaviour
     public GameObject BuildPlanetAndSmall(float r, int planes,bool GenerateOcean)
     {
         Material localMaterial = material[Random.Range(0, material.Length)];
-        GameObject BigPlanet = BuildPlanet(r, planes,true, localMaterial);
+        GameObject BigPlanet = BuildPlanet(r, planes,true, localMaterial,true);
         GenerateCube(1, 10, r,false);
-        GameObject SmallPlanet = BuildPlanet(r, planes,false, localMaterial);
+        GameObject SmallPlanet = BuildPlanet(r, planes,false, localMaterial,true);
         SmallPlanet.transform.parent = BigPlanet.transform;
 
         BigPlanet.transform.GetChild(0).gameObject.SetActive(false);
         if (GenerateOcean == true)
         {
             GenerateCube(1, 10, r, false);
-            GameObject Ocean = BuildPlanet(r+Random.Range(0f,3f), planes, false, OceanMaterial[Random.Range(0,OceanMaterial.Length)]);
+            GameObject Ocean = BuildPlanet(r+Random.Range(0f,3f), planes, false, OceanMaterial[Random.Range(0,OceanMaterial.Length)],false);
             Ocean.transform.parent = BigPlanet.transform;
             Ocean.name = "Ocean";
             Ocean.SetActive(false);
@@ -208,7 +208,7 @@ public class PlanetGenerator : MonoBehaviour
         return BigPlanet;
 
     }
-    public GameObject BuildPlanet(float r,int planes,bool buildComponents, Material localMaterial)
+    public GameObject BuildPlanet(float r,int planes,bool buildComponents, Material localMaterial ,bool DoCreateColider)
     {
         GameObject Parent = new GameObject();
         Parent.transform.parent = transform;
@@ -225,7 +225,7 @@ public class PlanetGenerator : MonoBehaviour
             g.rStart = r;
             g.planes = planes;
         }
-        else
+        else if (DoCreateColider == true)
         {
             SphereCollider col2 = Parent.AddComponent<SphereCollider>();
             col2.radius = r;
@@ -234,7 +234,6 @@ public class PlanetGenerator : MonoBehaviour
         GameObject Chunks = new GameObject();
         Chunks.transform.parent = Parent.transform;
         Chunks.name = "Chunks";
-
 
         for (int i = 0; i < PlanesInf.Count; i++)
         {
